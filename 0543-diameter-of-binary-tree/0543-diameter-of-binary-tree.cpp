@@ -11,27 +11,17 @@
  */
 class Solution {
 public:
-    int maxDepth(TreeNode* root) { 
-        if (root == nullptr) return 0; 
-        int left = maxDepth(root->left); 
-        int right = maxDepth(root->right); 
-        return 1 + max(left, right); 
+    int maxDepth(TreeNode* root, int& maxi) { 
+        if(root == nullptr) return 0; 
+        int left = maxDepth(root->left,maxi); 
+        int right = maxDepth(root->right,maxi); 
+        maxi = max(maxi, left+ right);
+        return 1+ max(left, right); 
     } 
 
     int diameterOfBinaryTree(TreeNode* root) {
-        if (root == nullptr) return 0;
-
-        int left = maxDepth(root->left);  // Depth of left subtree
-        int right = maxDepth(root->right); // Depth of right subtree
-
-        // Diameter passing through the current node
-        int currDiameter = left + right;
-
-        // Diameter of left and right subtrees
-        int leftDia = diameterOfBinaryTree(root->left);
-        int rightDia = diameterOfBinaryTree(root->right);
-
-        // Maximum diameter across the tree
-        return max(currDiameter, max(leftDia, rightDia));
+        int diameter =0;
+        maxDepth(root, diameter);
+        return diameter;
     }
 };
