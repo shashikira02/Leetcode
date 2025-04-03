@@ -11,7 +11,7 @@
  */
 class BSTIterator {
     stack<TreeNode*> st;
-    void pushAll(TreeNode* node){
+    void pushAll(TreeNode* node){// push all the left nodes in stack
         while(node!=nullptr ){
             st.push(node);
             node = node->left;
