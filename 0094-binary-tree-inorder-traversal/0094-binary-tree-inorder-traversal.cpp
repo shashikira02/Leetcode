@@ -11,33 +11,18 @@
  */
 class Solution {
 public:
+    void dfs(vector<int>&ans , TreeNode* root){
+        if(root == nullptr)return;
+
+        dfs(ans, root->left);
+        ans.push_back(root->val);
+        dfs(ans, root->right);
+    }
     vector<int> inorderTraversal(TreeNode* root) {
-        vector<int> inorder;
+        vector<int> ans;
 
-        TreeNode * curr = root;
-        while(curr != NULL){
-            if(curr->left == NULL){
-                inorder.push_back(curr->val);
-                curr = curr->right;
-            }
-            else{
-                TreeNode* prev = curr->left;
-                while(prev->right && prev->right != curr){
-                    prev = prev->right;
-                }
+        dfs(ans, root);
 
-                if(prev->right == NULL){
-                    prev->right =curr;
-                    curr = curr->left;
-                }
-                else{
-                    prev->right = NULL;
-                    inorder.push_back(curr->val);
-                    curr = curr->right;
-                } 
-            }
-        }
-        return inorder;
-
+        return ans;
     }
 };
