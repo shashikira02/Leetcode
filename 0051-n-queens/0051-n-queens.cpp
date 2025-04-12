@@ -33,6 +33,8 @@ public:
         for (int i = 0; i < n; i++) {
             board[i] = s; // Fill board with empty rows
         }
+        // leftrow: Tracks occupied rows (size n).
+        // upperDiagonal and lowerDiagonal: Track occupied diagonals (size 2 * n - 1). These ensure no two queens conflict.
         vector<int> leftrow(n, 0), upperDiagonal(2 * n - 1, 0),
             lowerDiagonal(2 * n - 1, 0);
         solve(0, board, ans, leftrow, upperDiagonal, lowerDiagonal, n);
