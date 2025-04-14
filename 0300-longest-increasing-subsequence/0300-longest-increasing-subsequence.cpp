@@ -2,19 +2,22 @@ class Solution {
 public:
     int lengthOfLIS(vector<int>& nums) {
         int n = nums.size(); // Size of the input array
-        vector<int>next(n + 1, 0), curr(n+1,0); // {ind, prev_ind}
+        vector<int> dp(n, 1); // dp[i] starts at 1, since every element can form an LIS of length 1
+        int maxi = 1; // Variable to track the maximum LIS length
 
-        for (int ind = n - 1; ind >= 0; ind--) {
-            for (int prev_ind = ind - 1; prev_ind >= -1; prev_ind--) {
-                int len = next[prev_ind + 1]; // Skip the current element
-                if (prev_ind == -1 || nums[ind] > nums[prev_ind]) {
-                    len = max(len, 1 + next[ind + 1]); // Include the current element
+        // Iterate through each element
+        for (int i = 0; i < n; i++) {
+            // Check all previous elements for LIS condition
+            for (int prev = 0; prev < i; prev++) {
+                // If nums[prev] < nums[i], we can extend the LIS ending at prev to include nums[i]
+                if (nums[prev] < nums[i]) {
+                    dp[i] = max(dp[i], 1 + dp[prev]); // Update dp[i] to the longest LIS ending at i
                 }
-                curr[prev_ind + 1] = len; // Update the correct cell
             }
-            next = curr ;
+            // Update the global maximum LIS length
+            maxi = max(maxi, dp[i]);
         }
 
-        return curr[0]; // The result is stored here
+        return maxi; // Return the length of the longest increasing subsequence
     }
 };
