@@ -1,25 +1,25 @@
 class Solution {
-public:
-    int dp[605][101][101];
-    int solve(vector<string>& strs, int m, int n,int idx){
-        if(idx==strs.size()) return 0;
-
-        if(dp[idx][m][n]!=-1) return dp[idx][m][n];
-
-        int cnt_0 = 0,cnt_1 = 0,ans = 0;
-
-        for(int j = 0;j<strs[idx].size();j++){
-            if(strs[idx][j]=='1') cnt_1++;
-            else cnt_0++;
+    int findMaxi(vector<string>& strs, int m, int n, int ind, vector<vector<vector<int>>> &dp) {
+        if (ind == strs.size())
+            return 0;
+        if(dp[m][n][ind] !=-1){
+            return dp[m][n][ind];
         }
 
-        if(m>=cnt_0 && n>=cnt_1) ans = max(ans,1+solve(strs,m-cnt_0,n-cnt_1,idx+1));
-        ans = max(ans,solve(strs,m,n,idx+1));
+        int zeros = count(strs[ind].begin(), strs[ind].end(), '0');
+        int ones = strs[ind].size() - zeros;
 
-        return dp[idx][m][n] = ans;
+        if (m >= zeros && n >= ones) {
+            return dp[m][n][ind] = max(1 + findMaxi(strs, m - zeros, n - ones, ind + 1, dp),
+                       findMaxi(strs, m, n, ind + 1, dp));
+        }
+
+        return dp[m][n][ind]= findMaxi(strs,m,n, ind+1, dp);
     }
+
+public:
     int findMaxForm(vector<string>& strs, int m, int n) {
-        memset(dp,-1,sizeof(dp));
-        return solve(strs,m,n,0);
+        vector<vector<vector<int>>>dp(m+1, vector<vector<int>>(n+1,vector<int>(strs.size(), -1)));
+        return findMaxi(strs, m, n, 0, dp);
     }
 };
