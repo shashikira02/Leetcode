@@ -1,21 +1,25 @@
 class Solution {
-    int findMaxi(vector<string>& strs, int m, int n, int ind) {
-        if (ind == strs.size())
-            return 0;
-
-        int zeros = count(strs[ind].begin(), strs[ind].end(), '0');
-        int ones = strs[ind].size() - zeros;
-
-        if (m >= zeros && n >= ones) {
-            return max(1 + findMaxi(strs, m - zeros, n - ones, ind + 1),
-                       findMaxi(strs, m, n, ind + 1));
-        }
-
-        return findMaxi(strs,m,n, ind+1);
-    }
-
 public:
     int findMaxForm(vector<string>& strs, int m, int n) {
-        return findMaxi(strs, m, n, 0);
+        vector<vector<vector<int>>> dp(
+            strs.size() + 1, vector<vector<int>>(m+1, vector<int>(n+1)));
+
+        for (int i = 1; i <= strs.size(); i++) {
+            int zeros = count(strs[i - 1].begin(), strs[i - 1].end(), '0');
+            int ones = strs[i - 1].size() - zeros;
+            for (int j = 0; j <= m; j++) {
+                for (int k = 0; k <= n; k++) {
+                    if (j - zeros >= 0 && k - ones >= 0) {
+
+                        dp[i][j][k] = max(1 + dp[i - 1][j - zeros][k - ones],
+                                          dp[i - 1][j][k]);
+                    } else {
+                        dp[i][j][k] = dp[i - 1][j][k];
+                    }
+                }
+            }
+        }
+
+        return dp[strs.size()][m][n];
     }
 };
