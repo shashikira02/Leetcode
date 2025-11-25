@@ -1,15 +1,13 @@
 class Solution {
 public:
     int smallestRepunitDivByK(int k) {
-        int curr =1, res =1;
-        set<int>st;
+        int curr = 1;
 
-        while(curr%k){
-            if(st.count(curr))return -1;
-            st.insert(curr);
-            curr = 10*(curr%k)+1;
-            res+=1;
+        for (int i = 1; i <= k; i++) {
+            if (curr % k == 0)
+                return i;
+            curr = 10 * (curr % k) + 1;
         }
-        return res;
+        return -1;
     }
 };
