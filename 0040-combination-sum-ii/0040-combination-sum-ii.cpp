@@ -1,32 +1,32 @@
 class Solution {
 public:
-    vector<vector<int>> result;
-    
-    void comsum(vector<int> &curr, int target, int sum, vector<int> &candidates, int curInd, int n){
-        if(target == sum){
-            result.push_back(curr);
+    void findCombSum(int ind, vector<int>& candidates, int target,
+                     vector<int>& temp, vector<vector<int>>& ans) {
+
+        if (target == 0) {
+            ans.push_back(temp);
             return;
         }
-        else if(sum>target){
+        if (target < 0 || ind == candidates.size())
             return;
+
+        // take
+        temp.push_back(candidates[ind]);
+        findCombSum(ind + 1, candidates, target - candidates[ind], temp, ans);
+        temp.pop_back();
+
+        // skip
+        while(ind+1<candidates.size() && candidates[ind+1]== candidates[ind] ){
+            ind++;
         }
-        
-        for(int i = curInd; i < n; i++){
-            if(i != curInd && candidates[i]==candidates[i-1])               //to avoid picking up the same combnations i.e. we don't pick same element for certain kth position of a combination 
-                continue;
-            sum += candidates[i];
-            curr.push_back(candidates[i]);
-            comsum(curr, target, sum, candidates, i+1, n);
-            sum -= candidates[i];
-            curr.pop_back();
-        }
-        
+        findCombSum(ind + 1, candidates, target, temp, ans);
     }
+
     vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
-        vector<int> curr;
-        int n = candidates.size();
         sort(candidates.begin(), candidates.end());
-        comsum(curr, target, 0, candidates, 0, n);
-        return result;
+        vector<int> temp;
+        vector<vector<int>> ans;
+        findCombSum(0, candidates, target, temp, ans);
+        return ans;
     }
 };
