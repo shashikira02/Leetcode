@@ -1,25 +1,31 @@
 class Solution {
 public:
-    void combinatons(int ind, vector<int>& candidates, int target,
-                        vector<vector<int>>& ans, vector<int>& temp) {
-        if (ind == candidates.size()) {
-            if (target == 0)
-                ans.push_back(temp);
+    void findCombSum(int ind, vector<int>& candidates, int target,
+                     vector<int>& temp, vector<vector<int>>& ans) {
+        if (target == 0) {
+            ans.push_back(temp);
             return;
         }
+        if (target < 0 || ind == candidates.size())
+            return;
 
-        if (candidates[ind] <= target) {
-            temp.push_back(candidates[ind]);
-            combinatons(ind, candidates, target - candidates[ind], ans,
-                           temp);
+        for (int i = ind; i < candidates.size(); i++) {
+            if(candidates[i] >target)break;
+            temp.push_back(candidates[i]) ;
+            
+            // take  & skip happens when the i > ind
+            findCombSum(i, candidates, target - candidates[i], temp, ans);
+
             temp.pop_back();
         }
-        combinatons(ind + 1, candidates, target, ans, temp);
     }
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
         vector<vector<int>> ans;
         vector<int> temp;
-        combinatons(0, candidates, target, ans, temp);
+        sort(candidates.begin(), candidates.end());
+
+        findCombSum(0, candidates, target, temp, ans);
+
         return ans;
     }
 };
