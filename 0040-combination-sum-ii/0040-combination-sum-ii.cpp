@@ -1,26 +1,32 @@
 class Solution {
 public:
-    void combinations(int index, int target, const vector<int>& arr, vector<vector<int>>& ans, vector<int>& list) {
-        if (target == 0) { 
-            ans.push_back(list);
+    vector<vector<int>> result;
+    
+    void comsum(vector<int> &curr, int target, int sum, vector<int> &candidates, int curInd, int n){
+        if(target == sum){
+            result.push_back(curr);
+            return;
+        }
+        else if(sum>target){
             return;
         }
         
-        for (int i = index; i < arr.size(); i++) {
-            if (i > index && arr[i] == arr[i - 1]) continue; // Skip duplicates
-            if (arr[i] > target) break; // Prune the search
-
-            list.push_back(arr[i]);
-            combinations(i + 1, target - arr[i], arr, ans, list);
-            list.pop_back(); // Backtrack
+        for(int i = curInd; i < n; i++){
+            if(i != curInd && candidates[i]==candidates[i-1])               //to avoid picking up the same combnations i.e. we don't pick same element for certain kth position of a combination 
+                continue;
+            sum += candidates[i];
+            curr.push_back(candidates[i]);
+            comsum(curr, target, sum, candidates, i+1, n);
+            sum -= candidates[i];
+            curr.pop_back();
         }
+        
     }
-
     vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
-        sort(candidates.begin(), candidates.end()); // Sort to handle duplicates efficiently
-        vector<vector<int>> ans;
-        vector<int> list;
-        combinations(0, target, candidates, ans, list);
-        return ans;
+        vector<int> curr;
+        int n = candidates.size();
+        sort(candidates.begin(), candidates.end());
+        comsum(curr, target, 0, candidates, 0, n);
+        return result;
     }
 };
