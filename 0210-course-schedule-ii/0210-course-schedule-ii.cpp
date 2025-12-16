@@ -1,45 +1,48 @@
 class Solution {
 public:
-    bool dfs(int node, vector<int>& vis, vector<int>& pathVis, stack<int>& st, vector<vector<int>>& adj){
-        vis[node] = 1;
-        pathVis[node] = 1;
+    bool dfs(int node, vector<bool>& vis, vector<bool>& pathVis, stack<int>& st,
+             vector<vector<int>>& adj) {
+        vis[node] = true;
+        pathVis[node] = true;
 
-        for(auto adjNode: adj[node]){
-            if(!vis[adjNode]){
-                if(dfs(adjNode, vis, pathVis, st, adj)){
+        for (auto adjNode : adj[node]) {
+            if (!vis[adjNode]) {
+                if (dfs(adjNode, vis, pathVis, st, adj))
                     return true;
-                }
+            } else if (pathVis[adjNode]) {
+                return true;
             }
-            else if(pathVis[adjNode])return true;
         }
 
-        pathVis[node] =0;
         st.push(node);
+        pathVis[node] = false;
+
         return false;
     }
-    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
-        int n = numCourses;
-        vector<vector<int>> adj(n);
 
-        for (auto& edge : prerequisites) {
-            adj[edge[1]].push_back(edge[0]);
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        int V = numCourses;
+        vector<vector<int>> adj(V);
+
+        for (auto it : prerequisites) {
+            int u = it[0];
+            int v = it[1];
+            adj[v].push_back(u);
         }
 
-        vector<int> vis(n, 0);
-        vector<int> pathVis(n, 0);
+        vector<bool> vis(V, false);
+        vector<bool> pathVis(V, false);
         stack<int> st;
 
-        for (int i = 0; i < n; i++) {
-            if (!vis[i]) {
-               if( dfs(i, vis, pathVis, st,  adj)){
-                return {};
-               }
-            }
+        for (int i = 0; i < V; i++) {
+            if (!vis[i])
+                if (dfs(i, vis, pathVis, st, adj))
+                    return {};
         }
-        
+
         vector<int> ans;
 
-        while(!st.empty()){
+        while (!st.empty()) {
             ans.push_back(st.top());
             st.pop();
         }
