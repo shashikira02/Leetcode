@@ -1,24 +1,21 @@
 class Solution {
 public:
-    bool jump(int i, vector<int>& nums, vector<int>& dp) {
+    bool canJump(vector<int>& nums) {
         int n = nums.size();
 
-        if (i == n - 1 || i >= n)
-            return true;
-        if(dp[i]!=-1)return dp[i];
+        vector<int> dp(n, 0);
+        dp[n - 1] = 1;
 
-        for (int ind = i + 1; ind <= i + nums[i] && i < n; ind++) {
-            if (jump(ind, nums, dp))
-                return dp[i]= 1;
+        for (int i = n - 2; i >= 0; i--) {
+            for (int ind = i + 1; ind <= i + nums[i] && ind < n; ind++) {
+                if (dp[ind]) {
+                    dp[i] = 1;
+                    break;
+                }
+            }
+
         }
 
-        return dp[i]= 0;
-    }
-
-    bool canJump(vector<int>& nums) {
-
-        vector<int> dp(nums.size(), -1);
-
-        return jump(0, nums, dp);
+        return dp[0];
     }
 };
