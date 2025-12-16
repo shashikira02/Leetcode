@@ -1,51 +1,51 @@
 class Solution {
 public:
     int orangesRotting(vector<vector<int>>& grid) {
-        int n = grid.size(), m = grid[0].size(); // Grid dimensions
+        int n =grid.size();
+        int m =grid[0].size();
 
-        queue<pair<pair<int,int>,int>> q; // BFS queue: {{row, col}, time}
-        int freshCount = 0;              // Count of fresh oranges
+        vector<vector<int>>vis(grid);
+        queue<pair<pair<int, int>, int>> q; //{row, col, time}
 
-        // Initialize the queue and count fresh oranges
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                if (grid[i][j] == 2) { // Rotten orange
-                    q.push({{i, j}, 0}); // Push its position and time = 0
-                } else if (grid[i][j] == 1) { // Fresh orange
-                    freshCount++;            // Increment fresh orange count
+                if (vis[i][j] == 2) {
+                    q.push({{i, j}, 0});
                 }
             }
         }
 
-        int maxTime = 0; // Variable to track the maximum time elapsed
-        vector<int> delRow = {-1, 0, 1, 0}; // Direction array for row movements
-        vector<int> delCol = {0, 1, 0, -1}; // Direction array for column movements
+        vector<int> row = {-1, 0, 1, 0};
+        vector<int> col = {0, 1, 0, -1};
+        int maxTime = 0;
 
-        // BFS to rot adjacent oranges
         while (!q.empty()) {
-            int row = q.front().first.first;  // Current orange's row
-            int col = q.front().first.second; // Current orange's column
-            int time = q.front().second;      // Time taken to rot
-            maxTime = max(maxTime, time);     // Update maxTime
-            q.pop();                          // Remove the current orange from the queue
+            auto node = q.front();
+            q.pop();
+            int r = node.first.first;
+            int c = node.first.second;
+            int time = node.second;
 
-            // Check all 4 possible directions
+            maxTime = max(maxTime, time);
+
             for (int i = 0; i < 4; i++) {
-                int nRow = row + delRow[i]; // Compute neighboring row
-                int nCol = col + delCol[i]; // Compute neighboring column
-                // Check validity and if the neighbor is fresh
-                if (nRow >= 0 && nCol >= 0 && nRow < n && nCol < m &&
-                    grid[nRow][nCol] == 1) {
-                    q.push({{nRow, nCol}, time + 1}); // Mark neighboring orange as rotten with time + 1
-                    grid[nRow][nCol] = 2;             // Mark it as rotten
-                    freshCount--;                     // Decrement fresh orange count
+                int nRow = r + row[i];
+                int nCol = c + col[i];
+
+                if(nRow>=0 && nCol>=0 && nRow<n && nCol<m && vis[nRow][nCol]==1){
+                    q.push({{nRow, nCol}, time+1});
+                    vis[nRow][nCol]=2;
                 }
             }
         }
 
-        // If there are remaining fresh oranges, return -1
-        if (freshCount > 0) return -1;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (vis[i][j] == 1)
+                    return -1;
+            }
+        }
 
-        return maxTime; // Return the total time taken to rot all oranges
+        return maxTime;
     }
 };
