@@ -1,20 +1,26 @@
 class Solution {
 public:
-    int jump(vector<int>& nums) {
+    int canJump(int i, vector<int>& nums, int jumps, vector<int>& dp) {
         int n = nums.size();
-        if (n <= 1) return 0;
+        if (i >= n - 1)
+            return jumps;
 
-        int l = 0, r = 0, jumps = 0;
+        if(dp[i]!=-1)return dp[i];
 
-        while (r < n - 1) {
-            int farthest = 0;
-            for (int i = l; i <= r; i++) {
-                farthest = std::max(farthest, i + nums[i]);
-            }
-            l = r + 1;
-            r = farthest;
-            jumps += 1;
+        int mini = INT_MAX;
+
+        for (int ind = 1; ind <= nums[i] && i + ind < n; ind++) {
+            mini = min(canJump(ind + i, nums, jumps + 1, dp), mini);
         }
-        return jumps;
+
+        return dp[i] = mini;
     }
+
+    int jump(vector<int>& nums) { 
+        vector<int>dp(nums.size(), -1);
+
+        return canJump(0, nums, 0, dp); 
+
+        
+        }
 };
