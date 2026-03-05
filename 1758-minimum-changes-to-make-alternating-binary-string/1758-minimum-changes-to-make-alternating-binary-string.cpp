@@ -5,18 +5,15 @@ public:
 
         for (int i = 0; i < s.size(); i++) {
             if (i % 2 == 0) {
-                if (s[i] == '0') {
-                    one++;
-                } else
-                    zero++;
-            } else {
                 if (s[i] == '1') {
-                    one++;
-                } else {
+                    zero++;
+                } 
+            } else {
+                if (s[i] == '0') {
                     zero++;
                 }
             }
         }
-        return min(one, zero);
+        return min(int(s.size())-zero, zero);
     }
 };
