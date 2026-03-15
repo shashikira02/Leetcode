@@ -54,4 +54,16 @@ Collection of LeetCode questions  (https://leetcode.com/u/shashikiran2/)
 | ------- | ------- |
 | [3129-find-all-possible-stable-binary-arrays-i](https://github.com/shashikira02/Leetcode/tree/main/3129-find-all-possible-stable-binary-arrays-i/) | Medium |
 | [3130-find-all-possible-stable-binary-arrays-ii](https://github.com/shashikira02/Leetcode/tree/main/3130-find-all-possible-stable-binary-arrays-ii/) | Hard |
+## Math
+| Problem Name | Difficulty |
+| ------- | ------- |
+| [1622-fancy-sequence](https://github.com/shashikira02/Leetcode/tree/main/1622-fancy-sequence/) | Hard |
+## Design
+| Problem Name | Difficulty |
+| ------- | ------- |
+| [1622-fancy-sequence](https://github.com/shashikira02/Leetcode/tree/main/1622-fancy-sequence/) | Hard |
+## Segment Tree
+| Problem Name | Difficulty |
+| ------- | ------- |
+| [1622-fancy-sequence](https://github.com/shashikira02/Leetcode/tree/main/1622-fancy-sequence/) | Hard |
 <!---LeetCode Topics End-->
